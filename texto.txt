@@ -1,223 +1,336 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" style="scroll-behavior: smooth;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loss Barber | @lzdocorte00</title>
+    <title>Los Barber | Atendimento Domiciliar</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --gold: #c5a059; --bg: #0a0a0a; --card-bg: #161616; --text: #ffffff; --border: #333333; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Oswald', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); overflow-x: hidden; scroll-behavior: smooth; }
-        #brightness-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; pointer-events: none; z-index: 9999; opacity: 0; }
+        :root {
+            --gold: #c5a059;
+            --white: #ffffff;
+            --insta: #E1306C;
+            --wp: #25d366;
+            --bg: #0a0a0a;
+            --card-bg: #161616;
+            --text: #ffffff;
+            --input-bg: #000000;
+            --border: #333333;
+        }
 
-        /* TELA DE LOGIN */
-        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 5000; display: flex; justify-content: center; align-items: center; padding: 20px; }
-        .login-box { background: var(--card-bg); padding: 40px; border-radius: 20px; border: 2px solid var(--gold); text-align: center; width: 100%; max-width: 400px; }
-        .login-links { margin-top: 20px; border-top: 1px solid var(--border); padding-top: 15px; display: flex; flex-direction: column; gap: 12px; }
-        .login-links a { color: var(--gold); text-decoration: none; font-size: 0.9rem; font-weight: bold; }
+        [data-theme="light"] {
+            --bg: #f4f4f4;
+            --card-bg: #ffffff;
+            --text: #1a1a1a;
+            --input-bg: #eeeeee;
+            --border: #cccccc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Oswald', sans-serif; transition: background 0.3s, color 0.3s; }
+        body { background-color: var(--bg); color: var(--text); overflow-x: hidden; }
+
+        #brightness-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; pointer-events: none; z-index: 9999; opacity: 0;
+        }
+
+        /* MENU LATERAL DOURADO */
+        .settings-side {
+            position: fixed; top: 0; right: -300px; width: 300px; height: 100%;
+            background: var(--gold); z-index: 3000; transition: 0.4s;
+            padding: 30px; box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+            color: white; overflow-y: auto;
+        }
+        .settings-side.active { right: 0; }
+        .settings-side h2, .settings-side h4, .settings-side p, .settings-side span { color: white !important; }
+        
+        .settings-btn { position: absolute; top: 20px; right: 20px; background: var(--gold); border: 2px solid white; color: white; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; z-index: 100; }
+
+        .setting-item { margin-bottom: 25px; }
+        .setting-item h4 { text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px; font-size: 0.9rem; }
+        
+        .lang-select { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid white; background: rgba(255,255,255,0.2); color: white; font-weight: bold; outline: none; }
+        .lang-select option { color: black; }
+
+        .range-style { width: 100%; cursor: pointer; accent-color: white; }
+        .feedback-card { background: rgba(0,0,0,0.1); padding: 10px; border-radius: 5px; margin-bottom: 10px; border-left: 3px solid white; font-size: 0.8rem; }
 
         /* HEADER */
-        header { height: 50vh; background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1512690118299-a61250133440?auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; border-bottom: 4px solid var(--gold); }
-        .logo-area h1 { font-size: 3.5rem; color: var(--gold); letter-spacing: 5px; text-transform: uppercase; }
+        header {
+            height: 60vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-position: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-bottom: 4px solid var(--gold);
+        }
+        .logo-area h1 { font-size: 3.5rem; color: var(--gold); text-transform: uppercase; font-weight: 900; }
 
-        /* IMPACTO */
-        .impact-section { padding: 80px 10%; text-align: center; }
-        .impact-section h2 { color: var(--gold); font-size: 2.5rem; margin-bottom: 20px; text-transform: uppercase; }
-        .impact-section p { font-size: 1.2rem; line-height: 1.8; opacity: 0.9; }
+        /* PREÇOS */
+        .prices { padding: 30px 5%; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; background: var(--card-bg); }
+        .price-item { border: 2px solid var(--gold); padding: 10px 20px; text-align: center; border-radius: 12px; min-width: 140px; }
+        .price-item span { font-size: 1.4rem; color: var(--gold); font-weight: 900; }
 
-        /* AGENDA */
-        .calendar-container { max-width: 500px; margin: 0 auto; background: var(--card-bg); padding: 35px; border-radius: 20px; border: 1px solid var(--gold); text-align: center; }
-        .input-field { width: 100%; padding: 15px; background: #000; color: white; border: 1px solid var(--border); margin-bottom: 15px; border-radius: 8px; outline: none; }
-        .btn-gold { background: var(--gold); color: #000; border: none; padding: 18px; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; text-transform: uppercase; border-radius: 8px; }
+        /* AGENDAMENTO */
+        .agenda { padding: 30px 5%; text-align: center; }
+        .area-atendimento { background: rgba(197, 160, 89, 0.1); border: 1px dashed var(--gold); padding: 15px; margin: 20px auto; max-width: 450px; border-radius: 10px; }
+        .calendar-container { max-width: 450px; margin: 0 auto; background: var(--card-bg); padding: 30px; border-radius: 20px; border: 1px solid var(--border); }
+        .days-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .day-btn { background: var(--input-bg); border: 1px solid var(--border); color: var(--text); padding: 15px; cursor: pointer; font-weight: bold; border-radius: 8px; }
+        .day-btn.active { background: var(--gold) !important; color: #000 !important; }
+        .btn-agendar { background: var(--gold); color: #000; border: none; padding: 20px; font-size: 1.2rem; font-weight: bold; cursor: pointer; width: 100%; text-transform: uppercase; border-radius: 8px; }
 
-        /* STATUS / CANCELAR */
-        .status-box { margin-bottom: 20px; padding: 20px; background: rgba(197, 160, 89, 0.1); border: 1px solid var(--gold); border-radius: 10px; display: none; }
-        .btn-cancel { background: #ff4444; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; margin-top: 10px; font-weight: bold; }
+        /* CHAMADA FINAL */
+        .chamada-domiciliar { padding: 60px 10%; text-align: center; background: var(--bg); border-top: 1px solid var(--border); }
+        .chamada-domiciliar h2 { color: var(--gold); font-size: 2.2rem; margin-bottom: 15px; text-transform: uppercase; font-weight: 900; }
+        .chamada-domiciliar p { font-size: 1.1rem; opacity: 0.8; line-height: 1.6; max-width: 650px; margin: 0 auto 30px; }
 
-        /* MENU 3 SETAS */
-        .menu-trigger { position: fixed; top: 20px; right: 20px; background: var(--gold); border: none; padding: 12px; border-radius: 5px; z-index: 4001; cursor: pointer; color: #000; }
-        .settings-side { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: var(--gold); z-index: 4000; transition: 0.4s; padding: 30px; color: white; }
-        .settings-side.active { right: 0; }
+        /* FLUTUANTES */
+        .back-to-top { position: fixed; bottom: 145px; right: 20px; background: var(--gold); color: #000; width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; z-index: 999; }
+        .social-float { position: fixed; right: 20px; width: 55px; height: 55px; border-radius: 50px; display: flex; justify-content: center; align-items: center; font-size: 25px; color: white; z-index: 1000; }
+        .whatsapp-btn { bottom: 80px; background-color: var(--wp); }
+        .instagram-btn { bottom: 15px; background-color: var(--insta); }
 
-        /* SAC / RECLAME AQUI */
-        .reclame-section { padding: 60px 10%; background: #050505; text-align: center; border-top: 1px solid var(--border); }
-        .reclame-btn { color: #ff4444; text-decoration: none; border: 2px solid #ff4444; padding: 15px 30px; display: inline-block; border-radius: 8px; font-weight: bold; margin-bottom: 20px; }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px; backdrop-filter: blur(8px); }
+        .modal-content { background: var(--card-bg); padding: 30px; border-radius: 20px; width: 100%; max-width: 400px; border: 2px solid var(--gold); text-align: center; }
+        .modal-content input, .modal-content select { width: 100%; padding: 15px; margin-bottom: 15px; background: var(--input-bg); border: 1px solid var(--border); color: var(--text); border-radius: 8px; }
 
-        .rating-area { margin-top: 25px; padding: 20px; border: 2px dashed var(--gold); display: none; }
-        .stars i { font-size: 2rem; color: #333; cursor: pointer; }
-        .stars i.active { color: var(--gold); }
-        
-        footer { padding: 40px; text-align: center; background: #000; border-top: 1px solid var(--border); }
-        .social-link { color: var(--gold); font-size: 1.8rem; text-decoration: none; transition: 0.3s; }
+        footer { padding: 40px; text-align: center; opacity: 0.4; font-size: 0.8rem; }
     </style>
 </head>
-<body>
+<body id="topo">
 
     <div id="brightness-overlay"></div>
-
-    <div id="login-screen">
-        <div class="login-box">
-            <h1 style="color:var(--gold)">LOSS BARBER</h1>
-            <p style="margin-bottom: 20px; opacity: 0.8;">Barbearia Delivery Premium</p>
-            <input type="text" id="login-nome" class="input-field" placeholder="Seu Nome">
-            <button class="btn-gold" onclick="fazerLogin()">ENTRAR NO SITE</button>
-            <div class="login-links">
-                <a href="https://instagram.com/lzdocorte00" target="_blank">
-                    <i class="fab fa-instagram"></i> Siga @lzdocorte00
-                </a>
-                <a href="https://wa.me/5551982143042?text=Olá, preciso de ajuda com o site." target="_blank">
-                    <i class="fas fa-headset"></i> SAC: Suporte ao Cliente
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <button class="menu-trigger" onclick="document.getElementById('settings-menu').classList.toggle('active')">
-        <i class="fas fa-bars"></i>
-    </button>
+    <button class="settings-btn" onclick="toggleSettings()"><i class="fas fa-cog"></i></button>
 
     <div class="settings-side" id="settings-menu">
-        <button onclick="document.getElementById('settings-menu').classList.remove('active')" style="background:none; border:none; color:white; font-size:1.5rem; float:right;">&times;</button>
-        <h3>MENU</h3><br>
-        <label>Ajustar Brilho:</label>
-        <input type="range" style="width:100%" min="0" max="0.8" step="0.1" value="0" oninput="document.getElementById('brightness-overlay').style.opacity = this.value">
-        <br><br>
-        <button onclick="fazerLogout()" style="background: none; border: 1px solid white; color: white; width: 100%; padding: 10px; cursor: pointer;">SAIR DA CONTA</button>
+        <button onclick="toggleSettings()" style="background:none; border:none; color:white; font-size:1.5rem; float:right; cursor:pointer;">&times;</button>
+        <h2 id="txt-settings-title" style="margin-bottom:20px;">AJUSTES</h2>
+
+        <div class="setting-item">
+            <h4 id="txt-lang-label">Idioma / Language</h4>
+            <select class="lang-select" onchange="changeLanguage(this.value)">
+                <option value="pt">Português</option>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+            </select>
+        </div>
+
+        <div class="setting-item">
+            <h4 id="txt-brightness-label">Brilho da Tela</h4>
+            <input type="range" class="range-style" min="0" max="0.8" step="0.1" value="0" oninput="adjustBrightness(this.value)">
+        </div>
+
+        <div class="setting-item">
+            <h4 id="txt-theme-label">Tema Visual</h4>
+            <button onclick="toggleTheme()" id="txt-theme-btn" style="width:100%; padding:10px; background:white; color:var(--gold); border:none; font-weight:bold; border-radius:5px; cursor:pointer;">TROCAR MODO</button>
+        </div>
+
+        <div class="setting-item">
+            <h4 id="txt-feedback-label">Feedbacks Públicos</h4>
+            <div id="feedbacks-container">
+                <div class="feedback-card"><span>Vitor Souza</span>"A barbearia em casa facilita demais!"</div>
+            </div>
+        </div>
     </div>
 
-    <header><div class="logo-area"><h1>LOSS BARBER</h1></div></header>
+    <a href="#topo" class="back-to-top"><i class="fas fa-arrow-up"></i></a>
+    <a href="https://wa.me/5551982143042" class="social-float whatsapp-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://instagram.com/lzdocorte00" class="social-float instagram-btn" target="_blank"><i class="fab fa-instagram"></i></a>
 
-    <section class="impact-section">
-        <h2>Você não precisa sair de casa</h2>
-        <p>Receba o tratamento de uma barbearia de elite no seu sofá. Praticidade total para o homem moderno que valoriza seu tempo e estilo.</p>
+    <header>
+        <div class="logo-area">
+            <h1>LOS BARBER</h1>
+            <div id="txt-subtitle" style="color:var(--white); font-weight:bold; letter-spacing:2px; margin-top:10px;">ESTILO NO CONFORTO DA SUA CASA</div>
+        </div>
+    </header>
+
+    <section class="prices">
+        <div class="price-item"><h2 id="txt-price-corte">CORTE</h2><span>R$ 25</span></div>
+        <div class="price-item"><h2 id="txt-price-sob">SOBRANCELHA</h2><span>R$ 5</span></div>
+        <div class="price-item"><h2>LUZES</h2><span>R$ 85</span></div>
     </section>
 
-    <section style="padding: 40px 0;">
+    <section class="agenda">
+        <div class="area-atendimento">
+            <strong id="txt-area-title" style="color:var(--gold)">📍 Mato Grande & Centro</strong>
+            <p id="txt-area-desc">Outros locais: Consultar taxa de transporte.</p>
+        </div>
+
         <div class="calendar-container">
-            <div id="status-agendado" class="status-box">
-                <p><strong>HORÁRIO RESERVADO!</strong></p>
-                <p id="detalhe-agendamento" style="margin: 10px 0;"></p>
-                <button class="btn-cancel" onclick="cancelarAgendamento()">CANCELAR AGORA</button>
+            <h3 id="txt-agenda-title" style="margin-bottom:15px; color:var(--gold)">RESERVE SEU HORÁRIO</h3>
+            <div class="days-grid">
+                <button class="day-btn" onclick="selectDay(this)">SEG</button>
+                <button class="day-btn" onclick="selectDay(this)">TER</button>
+                <button class="day-btn" onclick="selectDay(this)">QUA</button>
+                <button class="day-btn" onclick="selectDay(this)">QUI</button>
+                <button class="day-btn" onclick="selectDay(this)">SEX</button>
+                <button class="day-btn" onclick="selectDay(this)">SÁB</button>
             </div>
-
-            <div id="form-agendar">
-                <h2 style="color:var(--gold); margin-bottom: 20px;">AGENDE SEU CORTE</h2>
-                <input type="date" id="data-agenda" class="input-field" onchange="renderHorarios()">
-                <select class="input-field" id="horarios"><option value="">Selecione a Data</option></select>
-                <input type="text" id="user-address" class="input-field" placeholder="Seu Endereço">
-                <button class="btn-gold" onclick="finalizarAgendamento()">RESERVAR VIA WHATSAPP</button>
-            </div>
-
-            <div id="rating-area" class="rating-area">
-                <h3>O que achou do atendimento?</h3>
-                <div class="stars" id="star-box">
-                    <i class="fas fa-star" onclick="avaliar(1)"></i><i class="fas fa-star" onclick="avaliar(2)"></i><i class="fas fa-star" onclick="avaliar(3)"></i><i class="fas fa-star" onclick="avaliar(4)"></i><i class="fas fa-star" onclick="avaliar(5)"></i>
-                </div>
-            </div>
+            <select class="select-field" id="servico-escolhido">
+                <option value="" id="txt-select-serv">Qual o serviço?</option>
+                <option value="Corte Masculino">Corte Masculino</option>
+                <option value="Sobrancelha">Sobrancelha</option>
+                <option value="Corte + Sobrancelha">Corte + Sobrancelha</option>
+            </select>
+            <select class="select-field" id="horarios">
+                <option value="" id="txt-select-hour">Qual o horário?</option>
+            </select>
+            <button class="btn-agendar" onclick="validarEAvancar()" id="txt-btn-agendar">AGENDAR AGORA</button>
         </div>
     </section>
 
-    <section class="reclame-section">
-        <h2 style="color:#ff4444; margin-bottom: 10px;">RECLAME AQUI</h2>
-        <p style="margin-bottom: 20px;">Problemas com o atendimento? Fale com a gerência.</p>
-        <a href="https://wa.me/5551982143042?text=Quero registrar uma reclamação." class="reclame-btn">CHAMAR NO WHATSAPP</a>
+    <section class="chamada-domiciliar">
+        <h2 id="txt-call-title">Por que sair de casa?</h2>
+        <p id="txt-call-p">Para que enfrentar trânsito ou filas se você pode receber o trabalho em sua casa? Praticidade, higiene e o melhor estilo.</p>
+        <div class="logo-final"><i class="fas fa-cut"></i></div>
     </section>
 
-    <footer>
-        <a href="https://instagram.com/lzdocorte00" target="_blank" class="social-link">
-            <i class="fab fa-instagram"></i>
-        </a>
-        <p style="margin-top: 10px; font-size: 0.8rem; opacity: 0.6;">@lzdocorte00 | Loss Barber 2026</p>
-    </footer>
+    <footer><p>LOS BARBER &copy; 2026 | @lzdocorte00</p></footer>
+
+    <div id="modal-login" class="modal">
+        <div class="modal-content">
+            <h2 id="txt-modal-title" style="color:var(--gold); margin-bottom:20px;">DADOS PARA VISITA</h2>
+            <input type="text" id="user-name" placeholder="Nome / Name">
+            <input type="number" id="user-phone" placeholder="WhatsApp (ex: 51999999999)" 
+                   oninput="if (this.value.length > 11) this.value = this.value.slice(0, 11);">
+            <input type="text" id="user-address" placeholder="Endereço / Address">
+            <button class="btn-agendar" onclick="iniciarFluxo()" id="txt-modal-btn">FINALIZAR</button>
+            <button onclick="fecharModais()" style="background:none; border:none; color:var(--text); margin-top:10px; cursor:pointer; font-size:0.8rem;">Voltar</button>
+        </div>
+    </div>
 
     <script>
-        const horariosBase = ["10:00", "11:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"];
-        
-        window.onload = function() {
-            const hoje = new Date().toISOString().split('T')[0];
-            document.getElementById('data-agenda').setAttribute('min', hoje);
-            if(localStorage.getItem('usuario_nome')) {
-                document.getElementById('login-screen').style.display = 'none';
-                checarStatus();
+        const translations = {
+            pt: {
+                subtitle: "ESTILO NO CONFORTO DA SUA CASA",
+                settings: "AJUSTES",
+                langLabel: "Idioma",
+                brightness: "Brilho da Tela",
+                theme: "Tema Visual",
+                themeBtn: "TROCAR MODO",
+                feedback: "Feedbacks Públicos",
+                priceCorte: "CORTE",
+                priceSob: "SOBRANCELHA",
+                areaTitle: "📍 Mato Grande & Centro",
+                areaDesc: "Outros locais: Consultar taxa de transporte.",
+                agendaTitle: "RESERVE SEU HORÁRIO",
+                selServ: "Qual o serviço?",
+                selHour: "Qual o horário?",
+                btnAgendar: "AGENDAR AGORA",
+                callTitle: "Por que sair de casa?",
+                callP: "Para que enfrentar trânsito ou filas se você pode receber o trabalho em sua casa? Praticidade, higiene e o melhor estilo.",
+                modalTitle: "DADOS PARA VISITA",
+                modalBtn: "FINALIZAR"
+            },
+            en: {
+                subtitle: "STYLE IN THE COMFORT OF YOUR HOME",
+                settings: "SETTINGS",
+                langLabel: "Language",
+                brightness: "Screen Brightness",
+                theme: "Visual Theme",
+                themeBtn: "SWITCH MODE",
+                feedback: "Public Feedbacks",
+                priceCorte: "HAIRCUT",
+                priceSob: "EYEBROW",
+                areaTitle: "📍 Mato Grande & Downtown",
+                areaDesc: "Other areas: Transport fee applies.",
+                agendaTitle: "BOOK YOUR TIME",
+                selServ: "Choose service",
+                selHour: "Choose time",
+                btnAgendar: "BOOK NOW",
+                callTitle: "Why leave home?",
+                callP: "Why face traffic or queues if you can get the job done at home? Convenience, hygiene, and the best style.",
+                modalTitle: "VISIT DETAILS",
+                modalBtn: "FINISH"
+            },
+            es: {
+                subtitle: "ESTILO EN LA COMODIDAD DE TU CASA",
+                settings: "AJUSTES",
+                langLabel: "Idioma",
+                brightness: "Brillo de Pantalla",
+                theme: "Tema Visual",
+                themeBtn: "CAMBIAR MODO",
+                feedback: "Comentarios",
+                priceCorte: "CORTE",
+                priceSob: "CEJAS",
+                areaTitle: "📍 Mato Grande y Centro",
+                areaDesc: "Outras zonas: Consultar tasa de transporte.",
+                agendaTitle: "RESERVA TU HORA",
+                selServ: "¿Qué servicio?",
+                selHour: "¿Qué horario?",
+                btnAgendar: "RESERVAR AHORA",
+                callTitle: "¿Por qué salir de casa?",
+                callP: "¿Por qué enfrentar tráfico o filas si puedes recibir el trabajo en tu casa? Practicidad, higiene y el mejor estilo.",
+                modalTitle: "DATOS DE VISITA",
+                modalBtn: "FINALIZAR"
             }
         };
 
-        function fazerLogin() {
-            const nome = document.getElementById('login-nome').value;
-            if(!nome) return alert("Digite seu nome.");
-            localStorage.setItem('usuario_nome', nome);
-            location.reload();
+        function changeLanguage(lang) {
+            const t = translations[lang];
+            document.getElementById('txt-subtitle').innerText = t.subtitle;
+            document.getElementById('txt-settings-title').innerText = t.settings;
+            document.getElementById('txt-lang-label').innerText = t.langLabel;
+            document.getElementById('txt-brightness-label').innerText = t.brightness;
+            document.getElementById('txt-theme-label').innerText = t.theme;
+            document.getElementById('txt-theme-btn').innerText = t.themeBtn;
+            document.getElementById('txt-feedback-label').innerText = t.feedback;
+            document.getElementById('txt-price-corte').innerText = t.priceCorte;
+            document.getElementById('txt-price-sob').innerText = t.priceSob;
+            document.getElementById('txt-area-title').innerText = t.areaTitle;
+            document.getElementById('txt-area-desc').innerText = t.areaDesc;
+            document.getElementById('txt-agenda-title').innerText = t.agendaTitle;
+            document.getElementById('txt-select-serv').innerText = t.selServ;
+            document.getElementById('txt-select-hour').innerText = t.selHour;
+            document.getElementById('txt-btn-agendar').innerText = t.btnAgendar;
+            document.getElementById('txt-call-title').innerText = t.callTitle;
+            document.getElementById('txt-call-p').innerText = t.callP;
+            document.getElementById('txt-modal-title').innerText = t.modalTitle;
+            document.getElementById('txt-modal-btn').innerText = t.modalBtn;
         }
 
-        function renderHorarios() {
-            const select = document.getElementById('horarios');
-            const data = document.getElementById('data-agenda').value;
-            select.innerHTML = '<option value="">Horário</option>';
-            const ocupados = JSON.parse(localStorage.getItem('horarios_ocupados') || "[]");
-            horariosBase.forEach(h => {
-                const opt = document.createElement('option');
-                opt.value = h;
-                opt.text = ocupados.includes(`${data}-${h}`) ? h + " (OCUPADO)" : h;
-                if(ocupados.includes(`${data}-${h}`)) opt.disabled = true;
-                select.add(opt);
-            });
+        function toggleSettings() { document.getElementById('settings-menu').classList.toggle('active'); }
+        function adjustBrightness(val) { document.getElementById('brightness-overlay').style.opacity = val; }
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute("data-theme");
+            document.documentElement.setAttribute("data-theme", current === "light" ? "dark" : "light");
         }
 
-        function finalizarAgendamento() {
-            const d = document.getElementById('data-agenda').value;
-            const h = document.getElementById('horarios').value;
+        const selectH = document.getElementById('horarios');
+        for (let h = 10; h <= 19; h++) {
+            let hf = h < 10 ? '0'+h : h;
+            selectH.add(new Option(hf + ":00", hf + ":00"));
+            if(h < 19) selectH.add(new Option(hf + ":30", hf + ":30"));
+        }
+
+        let diaGlobal = "";
+        function selectDay(btn) {
+            document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            diaGlobal = btn.innerText;
+        }
+
+        function validarEAvancar() {
+            if (!diaGlobal || !document.getElementById('servico-escolhido').value || !document.getElementById('horarios').value) {
+                alert("Por favor, selecione Dia, Serviço e Horário!"); return;
+            }
+            document.getElementById('modal-login').style.display = 'flex';
+        }
+
+        function fecharModais() { document.getElementById('modal-login').style.display = 'none'; }
+
+        function iniciarFluxo() {
+            const nome = document.getElementById('user-name').value;
+            const fone = document.getElementById('user-phone').value;
             const end = document.getElementById('user-address').value;
-            if(!d || !h || !end) return alert("Preencha tudo!");
-
-            const id = `${d}-${h}`;
-            let ocup = JSON.parse(localStorage.getItem('horarios_ocupados') || "[]");
-            ocup.push(id);
-            localStorage.setItem('horarios_ocupados', JSON.stringify(ocup));
-            localStorage.setItem('meu_agendamento', id);
             
-            if(confirm("Deseja um lembrete 30 min antes?")) alert("Lembrete ativado!");
+            if(!nome || !fone || !end) { alert("Por favor, preencha todos os dados!"); return; }
+            if(fone.length < 10) { alert("O WhatsApp parece incompleto!"); return; }
 
-            window.open(`https://wa.me/5551982143042?text=Novo Agendamento (@lzdocorte00): ${d} às ${h} em ${end}`, '_blank');
+            const msg = `*AGENDAMENTO: ${nome.toUpperCase()}*\n📱 *Contato:* ${fone}\n📍 *Endereço:* ${end}\n✂️ *Serviço:* ${document.getElementById('servico-escolhido').value}\n📅 *Data:* ${diaGlobal} às ${document.getElementById('horarios').value}`;
+            
+            window.open(`https://wa.me/5551982143042?text=${encodeURIComponent(msg)}`, '_blank');
             location.reload();
         }
-
-        function checarStatus() {
-            const meu = localStorage.getItem('meu_agendamento');
-            if(!meu) return;
-            const partes = meu.split('-');
-            const agendData = `${partes[0]}-${partes[1]}-${partes[2]}`;
-            const agendHora = partes[3];
-            const agora = new Date();
-            const hoje = agora.toISOString().split('T')[0];
-            const horaH = agora.getHours().toString().padStart(2, '0') + ":" + agora.getMinutes().toString().padStart(2, '0');
-
-            if (agendData > hoje || (agendData === hoje && agendHora > horaH)) {
-                document.getElementById('status-agendado').style.display = 'block';
-                document.getElementById('detalhe-agendamento').innerText = `Marcado para: ${agendData.split('-').reverse().join('/')} às ${agendHora}`;
-                document.getElementById('form-agendar').style.display = 'none';
-            } else {
-                if(!localStorage.getItem('avaliado_' + meu)) document.getElementById('rating-area').style.display = 'block';
-            }
-        }
-
-        function cancelarAgendamento() {
-            if(confirm("Tem certeza que deseja cancelar?")) {
-                const meu = localStorage.getItem('meu_agendamento');
-                let ocup = JSON.parse(localStorage.getItem('horarios_ocupados') || "[]");
-                localStorage.setItem('horarios_ocupados', JSON.stringify(ocup.filter(i => i !== meu)));
-                localStorage.removeItem('meu_agendamento');
-                location.reload();
-            }
-        }
-
-        function avaliar(n) {
-            alert("Avaliação recebida! Obrigado.");
-            localStorage.setItem('avaliado_' + localStorage.getItem('meu_agendamento'), n);
-            location.reload();
-        }
-
-        function fazerLogout() { localStorage.clear(); location.reload(); }
     </script>
 </body>
 </html>
